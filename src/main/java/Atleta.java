@@ -10,7 +10,7 @@ public class Atleta extends Pessoa {
     @Override
     public String classificarIMC(double imc) {
         if (imc < 20.0) return "Abaixo do peso ideal para um atleta";
-        else if (imc < 27.0) return "Ideal para um atelta";
+        else if (imc < 27.0) return "Ideal para um atleta";
         else return "Acima do ideal para um atleta";
         }
 

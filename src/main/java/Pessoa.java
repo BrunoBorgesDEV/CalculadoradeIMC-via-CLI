@@ -1,10 +1,20 @@
-public class Pessoa extends PessoaBase implements CalculadoraIMC {
+public class Pessoa extends PessoaBase implements CalculadorIMC {
     private double peso;
     private double altura;
     private boolean active;
 
+    // CONSTRUTOR CORRIGIDO COM AS VALIDAÇÕES OBRIGATÓRIAS
     public Pessoa(String nome, int idade, double peso, double altura) {
         super(nome, idade);
+
+        if (peso <= 0) {
+            throw new IllegalArgumentException("O peso deve ser maior que zero.");
+        }
+
+        if (altura <= 0) {
+            throw new IllegalArgumentException("A altura deve ser maior que zero.");
+        }
+
         this.peso = peso;
         this.altura = altura;
         this.active = true;
@@ -50,12 +60,13 @@ public class Pessoa extends PessoaBase implements CalculadoraIMC {
             return "obesidade grau 3";
         }
     }
+
     @Override
     public String exibirPerfil() {
         double imcCalculado = calcularIMC(this.peso, this.altura);
         String classificacao = classificarIMC(imcCalculado);
 
         return String.format("Nome: %s, Idade: %d, Peso: %.2f kg, Altura: %.2f m | IMC: %.2f (%s)",
-                getNome(), getidade(), this.peso, this.altura, imcCalculado, classificacao);
+                getNome(), getIdade(), this.peso, this.altura, imcCalculado, classificacao);
     }
 }

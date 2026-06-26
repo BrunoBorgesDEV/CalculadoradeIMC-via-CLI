@@ -4,13 +4,14 @@ public class Main {
 
     public static double lerDouble(Scanner sc, String campo) {
         try {
-            double valor = sc.nextDouble();
+            String entrada = sc.next().replace(",", ".");
+            double valor = Double.parseDouble(entrada);
+
             if (valor <= 0) {
                 throw new EntradaInvalidaException(campo + " deve ser positivo!");
             }
             return valor;
-        } catch (java.util.InputMismatchException e) {
-            sc.nextLine();
+        } catch (NumberFormatException e) {
             throw new EntradaInvalidaException("Digite apenas números para " + campo);
         }
     }
@@ -29,13 +30,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         SistemaIMC sistema = new SistemaIMC();
         int opcao = -1;
 
         do {
             try {
-                System.out.println("\n=== MENU SISTEMA IMC ===");
+                System.out.println("\n--- MENU SISTEMA IMC ---");
                 System.out.println("[1] Cadastrar Pessoa comum");
                 System.out.println("[2] Cadastrar Atleta");
                 System.out.println("[3] Calcular e exibir IMC da última pessoa cadastrada");
@@ -43,46 +44,42 @@ public class Main {
                 System.out.println("[0] Encerrar o sistema");
                 System.out.print("Escolha uma opção: ");
 
-                if (!scanner.hasNextInt()) {
-                    scanner.nextLine();
+                if (!sc.hasNextInt()) {
+                    sc.nextLine();
                     throw new EntradaInvalidaException("Opção inválida! Digite um dos números do menu.");
                 }
-                opcao = scanner.nextInt();
-                scanner.nextLine(); // Limpa buffer
+                opcao = sc.nextInt();
+                sc.nextLine(); // Limpa buffer
 
                 switch (opcao) {
                     case 1:
                         System.out.print("Nome: ");
-                        String nomeP = scanner.nextLine();
+                        String nomeP = sc.nextLine();
                         System.out.print("Idade: ");
-                        int idadeP = lerInt(scanner, "idade");
+                        int idadeP = lerInt(sc, "idade");
                         System.out.print("Peso (kg): ");
-                        double pesoP = lerDouble(scanner, "peso");
+                        double pesoP = lerDouble(sc, "peso");
                         System.out.print("Altura (m): ");
-                        double alturaP = lerDouble(scanner, "altura");
+                        double alturaP = lerDouble(sc, "altura");
 
                         Pessoa novaPessoa = new Pessoa(nomeP, idadeP, pesoP, alturaP);
-
                         System.out.print("Resultado do processamento: ");
                         sistema.processar(novaPessoa);
                         break;
 
                     case 2:
                         System.out.print("Nome do Atleta: ");
-                        String nomeA = scanner.nextLine();
+                        String nomeA = sc.nextLine();
                         System.out.print("Idade: ");
-                        int idadeA = lerInt(scanner, "idade");
+                        int idadeA = lerInt(sc, "idade");
                         System.out.print("Peso (kg): ");
-                        double pesoA = lerDouble(scanner, "peso");
+                        double pesoA = lerDouble(sc, "peso");
                         System.out.print("Altura (m): ");
-                        double alturaA = lerDouble(scanner, "altura");
-                        scanner.nextLine();
+                        double alturaA = lerDouble(sc, "altura");
                         System.out.print("Modalidade: ");
-                        String modalidade = scanner.nextLine();
+                        String modalidade = sc.nextLine();
 
                         Atleta novoAtleta = new Atleta(nomeA, idadeA, pesoA, alturaA, modalidade);
-
-
                         System.out.print("Resultado do processamento: ");
                         sistema.processar(novoAtleta);
                         break;
@@ -102,12 +99,11 @@ public class Main {
                     default:
                         throw new EntradaInvalidaException("Opção inválida no menu!");
                 }
-
             } catch (EntradaInvalidaException e) {
                 System.out.println("\n[ERRO] " + e.getMessage());
             }
         } while (opcao != 0);
 
-        scanner.close();
+        sc.close();
     }
 }
